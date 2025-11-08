@@ -124,7 +124,7 @@ public class MapperBase {
      *               Can be any type including primitives, objects, collections, or null
      * @return a new {@link APIResponse} instance containing the entity as data with SUCCESS status
      *
-     * @see APIResponse#builder()
+     * @see APIResponse
      * @see Status#SUCCESS
      */
     public static <O> APIResponse<O> toDTO(O entity) {
