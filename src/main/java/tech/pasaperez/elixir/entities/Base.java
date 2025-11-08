@@ -66,7 +66,7 @@ public class Base implements Serializable {
      *
      * <p>The ID is automatically generated using the {@link GenerationType#IDENTITY}
      * strategy, which relies on the database's auto-increment feature to assign
-     * unique values. This is suitable for most database systems including MySQL,
+     * unique values. This is suitable for most database systems, including MySQL,
      * PostgreSQL, and SQL Server.</p>
      *
      * <p>The field is mapped to the "id" column in the database table and is

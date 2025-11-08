@@ -76,7 +76,7 @@ public abstract class BaseService <E extends Base, ID extends Serializable> impl
      * This method first checks for entity's existence using the checkIfExist method,
      * then persists the entity if it's unique and returns the saved entity wrapped in an API response.
      *
-     * @param entity the entity to be created, must not be null
+     * @param entity the entity to be created must not be null
      * @return APIResponse containing the created entity with its assigned identifier
      * @throws AlreadyExistException if an entity with the same characteristics already exists
      * @throws IllegalArgumentException if the entity parameter is null
@@ -95,7 +95,7 @@ public abstract class BaseService <E extends Base, ID extends Serializable> impl
      * This method retrieves all entities from the repository and compares each one with the
      * provided entity using the equals method to determine if a duplicate exists.
      *
-     * @param entity the entity to check for existence, must not be null
+     * @param entity the entity to check for existence must not be null
      * @return true if an entity with matching characteristics exists, false otherwise
      * @throws IllegalArgumentException if the entity parameter is null
      */
@@ -114,9 +114,9 @@ public abstract class BaseService <E extends Base, ID extends Serializable> impl
     /**
      * Finds and retrieves a specific entity by its unique identifier.
      * This method performs a repository lookup using the provided ID and returns
-     * the found entity wrapped in an API response, or throws an exception if not found.
+     * the found entity wrapped in an API response or throws an exception if not found.
      *
-     * @param id the unique identifier of the entity to retrieve, must not be null
+     * @param id the unique identifier of the entity to retrieve must not be null
      * @return APIResponse containing the found entity
      * @throws NotFoundException if no entity exists with the provided identifier
      * @throws IllegalArgumentException if the id parameter is null
@@ -133,7 +133,7 @@ public abstract class BaseService <E extends Base, ID extends Serializable> impl
 
     /**
      * Retrieves all entities of the specified type from the system.
-     * This method fetches all persisted entities from the repository and returns
+     * This method fetches all persisting entities from the repository and returns
      * them wrapped in an API response containing a list of entities.
      *
      * @return APIResponse containing a list of all entities, empty list if no entities exist
@@ -148,7 +148,7 @@ public abstract class BaseService <E extends Base, ID extends Serializable> impl
      * This method first verifies the entity exists by its ID, then updates the provided
      * entity with the existing entity's ID before saving and returning the updated entity.
      *
-     * @param id the unique identifier of the entity to update, must not be null
+     * @param id the unique identifier of the entity to update must not be null
      * @param entity the entity containing updated data must not be null
      * @return APIResponse containing the updated entity
      * @throws NotFoundException if no entity exists with the provided identifier
@@ -170,7 +170,7 @@ public abstract class BaseService <E extends Base, ID extends Serializable> impl
      * This method first verifies the entity exists, then performs the deletion operation
      * and returns the deleted entity information wrapped in an API response.
      *
-     * @param id the unique identifier of the entity to delete, must not be null
+     * @param id the unique identifier of the entity to delete must not be null
      * @return APIResponse containing the deleted entity information
      * @throws NotFoundException if no entity exists with the provided identifier
      * @throws IllegalArgumentException if the id parameter is null

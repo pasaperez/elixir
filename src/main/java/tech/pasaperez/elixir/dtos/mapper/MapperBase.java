@@ -110,13 +110,13 @@ public class MapperBase {
      * <p><strong>Example transformations:</strong></p>
      * <pre>
      * // Input: User entity
-     * // Output: APIResponse&lt;User&gt; with SUCCESS status and User in data field
+     * // Output: APIResponse&lt;User&gt; with SUCCESS status and User in the data field
      *
      * // Input: List&lt;Product&gt;
-     * // Output: APIResponse&lt;List&lt;Product&gt;&gt; with SUCCESS status and list in data field
+     * // Output: APIResponse&lt;List&lt;Product&gt;&gt; with SUCCESS status and list in the data field
      *
      * // Input: "Welcome message"
-     * // Output: APIResponse&lt;String&gt; with SUCCESS status and message in data field
+     * // Output: APIResponse&lt;String&gt; with SUCCESS status and message in the data field
      * </pre>
      *
      * @param <O> the generic type of the entity being wrapped

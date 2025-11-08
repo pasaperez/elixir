@@ -26,7 +26,7 @@ import lombok.ToString;
 /**
  * Custom exception class for handling response-related errors in the Elixir application.
  * This exception extends the standard Exception class and provides additional fields
- * to store specific error information including a custom message and error name.
+ * to store specific error information, including a custom message and error name.
  *
  * <p>This class uses Lombok annotations to automatically generate getter, setter,
  * toString, and constructor methods, reducing boilerplate code.</p>

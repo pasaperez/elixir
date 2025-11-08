@@ -20,6 +20,6 @@ package tech.pasaperez.elixir.exceptions;
 
 public class OperationNotSupportedException extends ResponseException {
     public OperationNotSupportedException() {
-        super("Operacion no soportada", "OperationNotSupportedException");
+        super("Operation not supported or allowed", "OperationNotSupportedException");
     }
 }

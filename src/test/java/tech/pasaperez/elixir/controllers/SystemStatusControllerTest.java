@@ -10,10 +10,10 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class EstadoDelSistemaControllerTest {
+public class SystemStatusControllerTest {
 
     @InjectMocks
-    private EstadoDelSistemaController estadoDelSistemaController;
+    private SystemStatusController systemStatusController;
 
     @BeforeEach
     public void setUp() {
@@ -26,9 +26,9 @@ public class EstadoDelSistemaControllerTest {
 
     @Test
     public void testStatus() {
-        ResponseEntity<String> response = estadoDelSistemaController.status();
+        ResponseEntity<String> response = systemStatusController.status();
         assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-        assertEquals("Todo Bien.", response.getBody());
+        assertEquals("OK", response.getBody());
     }
 }

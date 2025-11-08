@@ -69,7 +69,7 @@ public abstract class BaseController <E extends Base, S extends BaseService<E, L
      * This constructor initializes the controller with a service instance that will be used
      * for all business logic operations throughout the controller lifecycle.
      *
-     * @param servicio the service instance for business logic operations, must not be null
+     * @param servicio the service instance for business logic operations must not be null
      * @throws IllegalArgumentException if servicio is null
      */
     public BaseController(S servicio) {

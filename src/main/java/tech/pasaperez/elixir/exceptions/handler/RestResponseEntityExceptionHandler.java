@@ -68,12 +68,12 @@ public class RestResponseEntityExceptionHandler {
      * string response rather than a structured APIResponse object.</p>
      *
      * @param ex the RuntimeException that was thrown (specifically DefaultException)
-     * @return ResponseEntity containing error message string with HTTP 409 CONFLICT status
+     * @return ResponseEntity containing an error message string with HTTP 409 CONFLICT status
      * @see DefaultException
      */
     @ExceptionHandler(value= { DefaultException.class })
     protected ResponseEntity<String> handleDefaultConflict(RuntimeException ex) {
-        return new ResponseEntity<>("Manejador de Errores: \n" + ex.getMessage(),
+        return new ResponseEntity<>("Error handler: \n" + ex.getMessage(),
                 new HttpHeaders(), HttpStatus.CONFLICT);
     }
 
@@ -94,7 +94,7 @@ public class RestResponseEntityExceptionHandler {
     protected ResponseEntity<APIResponse<?>> handleNotFoundConflict(ResponseException ex) {
         return new ResponseEntity<>(APIResponse.builder()
                 .status(Status.ERROR)
-                .error(Collections.singletonList(new ErrorDTO("Detalle", ex.getMessage())))
+                .error(Collections.singletonList(new ErrorDTO("Detail", ex.getMessage())))
                 .build(),
                 new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
@@ -117,7 +117,7 @@ public class RestResponseEntityExceptionHandler {
     protected ResponseEntity<APIResponse<?>> handleAlreadyExistConflict(ResponseException ex) {
         return new ResponseEntity<>(APIResponse.builder()
                 .status(Status.ERROR)
-                .error(Collections.singletonList(new ErrorDTO("Detalle", ex.getMessage())))
+                .error(Collections.singletonList(new ErrorDTO("Detail", ex.getMessage())))
                 .build(),
                 new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
@@ -140,7 +140,7 @@ public class RestResponseEntityExceptionHandler {
     protected ResponseEntity<APIResponse<?>> handleOperationNotSupportedConflict(ResponseException ex) {
         return new ResponseEntity<>(APIResponse.builder()
                 .status(Status.ERROR)
-                .error(Collections.singletonList(new ErrorDTO("Detalle", ex.getMessage())))
+                .error(Collections.singletonList(new ErrorDTO("Detail", ex.getMessage())))
                 .build(),
                 new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
     }

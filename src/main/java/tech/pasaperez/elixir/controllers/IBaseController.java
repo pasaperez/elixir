@@ -37,10 +37,10 @@ import java.io.Serializable;
 /**
  * Generic base controller interface that defines common REST API endpoints for entities.
  * This interface provides a standard contract for controller layer implementations
- * that handle basic CRUD operations through HTTP endpoints with consistent response structure.
+ * that handle basic CRUD operations through HTTP endpoints with a consistent response structure.
  *
  * <p>This interface is designed to work with Spring Boot and provides RESTful endpoints
- * for entity management. All-methods return ResponseEntity for proper HTTP response handling
+ * for entity management. All methods return ResponseEntity for proper HTTP response handling
  * and include appropriate exception declarations for error scenarios.</p>
  *
  * <p>The interface includes Swagger/OpenAPI annotations for automatic API documentation
@@ -139,7 +139,7 @@ public interface IBaseController<E extends Base, ID extends Serializable> {
 
     /**
      * Retrieves all entities of the specified type through HTTP GET request.
-     * This endpoint returns a complete list of all persisted entities in the system.
+     * This endpoint returns a complete list of all persisting entities in the system.
      *
      * @return ResponseEntity containing a list of all entities and HTTP status 200 (OK)
      */

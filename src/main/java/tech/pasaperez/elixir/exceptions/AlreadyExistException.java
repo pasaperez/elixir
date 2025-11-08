@@ -20,6 +20,6 @@ package tech.pasaperez.elixir.exceptions;
 
 public class AlreadyExistException extends ResponseException {
     public AlreadyExistException() {
-        super("El recurso ya existe", "AlreadyExistException");
+        super("Resource already exist", "AlreadyExistException");
     }
 }

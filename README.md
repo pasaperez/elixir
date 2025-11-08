@@ -13,7 +13,7 @@ Java (Maven) module that provides a reusable base layer for building REST APIs o
 - Default CORS configuration (`WebConfig`)
 - Health/diagnostic endpoints (`SystemStatusController`)
 
-This module is designed as a library to accelerate the creation of microservices and modules with standard CRUD behavior.  
+This module is designed as a library to speed up the creation of microservices and modules with standard CRUD behavior.  
 It’s published as a JAR and integrated into Spring Boot applications.
 
 ## Stack and Dependencies
@@ -114,48 +114,46 @@ Generic CRUD flow:
 
 ## Extension Guide: Creating a CRUD for a Specific Entity
 
-1) **Entity**
-
-```java
-@Entity
-@Table(name = "products")
-public class Product extends Base {
-  @Column(nullable=false)
-  private String name;
-  // equals/hashCode recommended if you use base checkIfExist
-}
-````
-
+1. **Entity**
+    ```java
+    @Entity
+    @Table(name = "products")
+    public class Product extends Base {
+      @Column(nullable=false)
+      private String name;
+      // equals/hashCode recommended if you use base checkIfExist
+    }
+    ```
 2. **Repository**
 
-```java
-@Repository
-public interface ProductRepository extends BaseRepository<Product, Long> {
-  boolean existsByName(String name);
-}
-```
+    ```java
+    @Repository
+    public interface ProductRepository extends BaseRepository<Product, Long> {
+      boolean existsByName(String name);
+    }
+    ```
 
 3. **Service**
 
-```java
-@Service
-public class ProductService extends BaseService<Product, Long> {
-  private final ProductRepository repo;
-  public ProductService(ProductRepository repo) { super(repo); this.repo = repo; }
-  @Override
-  public boolean checkIfExist(Product p) { return repo.existsByName(p.getName()); }
-}
-```
+    ```java
+    @Service
+    public class ProductService extends BaseService<Product, Long> {
+      private final ProductRepository repo;
+      public ProductService(ProductRepository repo) { super(repo); this.repo = repo; }
+      @Override
+      public boolean checkIfExist(Product p) { return repo.existsByName(p.getName()); }
+    }
+    ```
 
 4. **Controller**
 
-```java
-@RestController
-@RequestMapping("/products")
-public class ProductController extends BaseController<Product, ProductService> {
-  public ProductController(ProductService service) { super(service); }
-}
-```
+    ```java
+    @RestController
+    @RequestMapping("/products")
+    public class ProductController extends BaseController<Product, ProductService> {
+      public ProductController(ProductService service) { super(service); }
+    }
+    ```
 
 This automatically exposes:
 
@@ -399,401 +397,6 @@ public class Parameters extends Base {
 ```
 
 Then repeat the Repository/Service/Controller steps shown for `Task`.
-
-# Libreria de base para REST CRUD en Spring Boot
-
-Módulo Java (Maven) que provee una capa base reutilizable para construir APIs REST sobre Spring (Web MVC + Data JPA), con:
-
-- Controladores genéricos para CRUD (BaseController)
-- Servicios genéricos con lógica común (BaseService)
-- Repositorio base (BaseRepository) sobre Spring Data JPA
-- DTO de respuesta estandarizada (APIResponse) y enum de estado (Status)
-- Mapper utilitario (MapperBase) para respuestas exitosas
-- Manejo global de errores con excepciones semánticas y un handler central
-- Configuración CORS por defecto (WebConfig)
-- Endpoints de salud/diagnóstico (EstadoDelSistemaController)
-
-Este módulo está pensado como una libreria para acelerar la creación de microservicios y módulos con CRUD estándar. 
-Se publica como JAR y se integra en aplicaciones Spring Boot.
-
-## Stack y dependencias
-
-El submódulo `backend/elixir` hereda sus dependencias del módulo padre `backend` (packaging = POM). }
-
-Principales componentes:
-
-- Spring Boot Web: `spring-boot-starter-web`
-- Spring Data JPA: `spring-boot-starter-data-jpa`, `spring-data-jpa`
-- Spring Data REST (opcional, heredado del padre)
-- Springdoc OpenAPI UI: `springdoc-openapi-starter-webmvc-ui`
-- Jakarta Persistence API: `jakarta.persistence-api`
-- Lombok (compilación): `lombok`
-- Testing: `spring-boot-starter-test`
-
-Packaging: `jar`
-
-## Arquitectura por capas y flujo típico
-
-- Controller → Service → Repository → DB
-- Todas las respuestas de éxito se envuelven en `APIResponse<T>` con `status = Status.SUCCESS`
-- Los errores se capturan en el handler global y devuelven `APIResponse<?>` con `status = Status.ERROR` y lista de `ErrorDTO`
-
-Flujo CRUD genérico:
-
-1) `BaseController` expone endpoints REST (POST, GET, PUT, DELETE) y delega en el Service.
-2) `BaseService` implementa lógica: creación, validación de existencia, búsqueda, actualización y borrado. Usa `BaseRepository`.
-3) `MapperBase` encapsula el resultado en `APIResponse` con `Status.SUCCESS`.
-4) Excepciones semánticas (`NotFoundException`, `AlreadyExistException`, etc.) son convertidas a respuestas HTTP por `RestResponseEntityExceptionHandler`.
-
-## Clases principales
-
-- configuration/WebConfig
-  - Habilita Web MVC y configura CORS: `allowedOrigins(*)`, métodos: PUT, DELETE, GET, POST.
-  - Nota: en producción, restringir orígenes.
-
-- controllers/IBaseController
-  - Interface de métodos: `create`, `getById`, `getAll`, `update`, `delete`.
-  - Anotado con OpenAPI (Operation/ApiResponses) para documentación.
-
-- controllers/BaseController
-  - Implementación abstracta que mapea endpoints REST:
-    - POST `/` → create
-    - GET `/{id}` → getById
-    - GET `/` → getAll
-    - PUT `/{id}` → update
-    - DELETE `/{id}` → delete (204 si éxito, 403 si falla)
-  - Requiere un `BaseService` específico por entidad.
-
-- controllers/EstadoDelSistemaController
-  - GET `/status` → 202 Accepted con cuerpo "Todo Bien.".
-  - GET `/status/error` → lanza `DefaultException` para probar el handler global.
-
-- services/interfaces/IBaseService
-  - Interface de CRUD genérico que opera con `APIResponse`.
-
-- services/BaseService
-  - Implementación abstracta genérica sobre `BaseRepository`.
-  - `create(E entity)`: valída existencia (método `checkIfExist`) y persiste; envuelve en `APIResponse`.
-  - `checkIfExist(E entity)`: recorre `findAll()` y compara con `equals()`.
-    - Nota: la implementación base utiliza `equals()` del entity; se recomienda redefinir `equals/hashCode` o sobreescribir `checkIfExist` 
-    en servicios concretos para reglas de unicidad reales o hacer queries específicas.
-  - `findById(ID id)`, `findAll()`, `update(ID id, E entity)`, `delete(ID id)` — devuelven `APIResponse`, lanzan `NotFoundException` cuando corresponde.
-
-- repositories/BaseRepository
-  - `@NoRepositoryBean` que extiende `JpaRepository<E, ID>` — base para repos concretos por entidad.
-
-- entities/Base
-  - `@MappedSuperclass` con `id` (Long) autogenerado (`IDENTITY`).
-
-- entities/Status
-  - Enum: `SUCCESS`, `ERROR`. Se usa en `APIResponse`.
-
-- dtos/APIResponse
-  - Wrapper genérico con: `data`, `status`, `error: List<ErrorDTO>`; `@JsonInclude(NON_NULL)`. Construcción con Lombok Builder.
-
-- dtos/ErrorDTO
-  - `record` inmutable `(field, message)` para detallar errores.
-
-- dtos/mapper/MapperBase
-  - `toDTO(T)` → `APIResponse<T>` con `Status.SUCCESS` y `data`.
-
-- exceptions/* y handler
-  - `ResponseException` base verificada con campos `message` y `name`.
-  - Específicas: `AlreadyExistException`, `NotFoundException`, `OperationNotSupportedException`.
-  - `DefaultException` (runtime) para errores genéricos.
-  - `RestResponseEntityExceptionHandler` (@RestControllerAdvice) mapea:
-    - DefaultException → 409 CONFLICT (String plano)
-    - NotFoundException → 404 NOT_FOUND (APIResponse con ErrorDTO)
-    - AlreadyExistException → 403 FORBIDDEN (APIResponse con ErrorDTO)
-    - OperationNotSupportedException → 405 METHOD_NOT_ALLOWED (APIResponse con ErrorDTO)
-
-## Endpoints incluidos (diagnóstico)
-
-- GET `/status` → 202 Accepted, body: "Todo Bien.".
-- GET `/status/error` → lanza `DefaultException` (para verificar manejo de errores).
-
-## Guía de extensión: crear un CRUD para una entidad concreta
-
-1) Entidad
-
-    ```java
-    @Entity
-    @Table(name = "products")
-    public class Product extends Base {
-      @Column(nullable=false)
-      private String name;
-      // equals/hashCode recomendados si usas checkIfExist base
-    }
-    ```
-
-2) Repositorio
-
-    ```java
-    @Repository
-    public interface ProductRepository extends BaseRepository<Product, Long> {
-      boolean existsByName(String name);
-    }
-    ```
-
-3) Servicio
-
-    ```java
-    @Service
-    public class ProductService extends BaseService<Product, Long> {
-      private final ProductRepository repo;
-      public ProductService(ProductRepository repo) { super(repo); this.repo = repo; }
-      @Override
-      public boolean checkIfExist(Product p) { return repo.existsByName(p.getName()); }
-    }
-    ```
-
-4) Controlador
-
-    ```java
-    @RestController
-    @RequestMapping("/products")
-    public class ProductController extends BaseController<Product, ProductService> {
-      public ProductController(ProductService service) { super(service); }
-    }
-    ```
-
-Eso expone automáticamente:
-- POST `/products/`
-- GET `/products/{id}`
-- GET `/products/`
-- PUT `/products/{id}`
-- DELETE `/products/{id}`
-
-Todas las respuestas siguen `APIResponse` y los errores se mapean por el handler global.
-
-## CORS
-
-`WebConfig` permite cualquier origen (`*`) y métodos PUT, DELETE, GET, POST para todos los paths. **Ajustar para producción.**
-
-## Pruebas
-
-- `EstadoDelSistemaControllerTest`: valída 202 y body del endpoint `/status`.
-- `BaseTest`: getters/setters y contrato básico de `Base`.
-- `StatusTest`: valores del enum.
-- `BaseServiceTest`: ejemplo con Mockito sobre `IBaseService` para validar contrato de respuestas.
-
-## Compilación y uso
-
-- Requisitos: JDK 16+, Maven 3.9+
-- Desde la raíz del repo:
-  - `mvn -q -DskipTests package` construye todos los módulos (incluido `elixir`).
-- Solo el submódulo:
-  - `cd backend/elixir`
-  - `mvn -q -DskipTests package`
-
-Este módulo es una librería; no contiene clase `@SpringBootApplication`. Úsalo desde una app Spring Boot que lo consuma 
-(agregando el módulo como dependencia de tu servicio) o como parte del multi-módulo ya configurado.
-
-## Buenas prácticas y notas
-
-- Implementa `equals/hashCode` en tus entidades o sobreescribe `checkIfExist` para reglas de unicidad reales (más eficiente que recorrer `findAll`).
-- Ajusta CORS para orígenes específicos en producción.
-- Usa Springdoc: al integrarlo en tu app Boot, tendrás Swagger UI en `/swagger-ui.html` o `/swagger-ui/index.html`.
-- Aprovecha `MapperBase` para respuestas exitosas uniformes.
-
-## Quickstart (5 minutos) — Cómo usar Elixir en tu app Spring Boot
-
-Importante: puedes basarte conceptualmente en cómo se usa en el módulo joyel, pero NO reutilices sus clases. Puedes inventar una entidad (por ej. `Tarea` o `Usuario`) o, si te sirve, crear una entidad `Parametros` propia. Aquí usamos `Tarea` como ejemplo.
-
-### 1) Dependencias
-
-Si tu proyecto ya incluye este repo como multi-módulo, no debes agregar nada. Si lo usas como dependencia externa (publicado en GitHub Packages), agrega:
-
-```xml
-<dependency>
-  <groupId>tech.pasaperez</groupId>
-  <artifactId>elixir</artifactId>
-    <version>[1.0.0,)</version>
-</dependency>
-```
-
-Para un Quickstart con base de datos en memoria añade H2 en tu app:
-
-```xml
-<dependency>
-  <groupId>com.h2database</groupId>
-  <artifactId>h2</artifactId>
-  <scope>runtime</scope>
-</dependency>
-```
-
-### 2) Configuración mínima (application.yml)
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:h2:mem:demo;DB_CLOSE_DELAY=-1;MODE=MySQL
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: ''
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-  h2:
-    console:
-      enabled: true
-```
-
-### 3) Entidad de ejemplo: Tarea
-
-```java
-package demo.todo;
-
-import jakarta.persistence.*;
-import lombok.*;
-import tech.pasaperez.elixir.entities.Base;
-
-@Entity
-@Table(name="tareas")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode(of={"titulo"})
-public class Tarea extends Base {
-  @Column(nullable=false, unique=true)
-  private String titulo;
-
-  @Column(nullable=false)
-  private String estado; // p.ej.: PENDIENTE, EN_PROGRESO, HECHA
-}
-```
-
-### 4) Repository
-
-```java
-package demo.todo;
-
-import org.springframework.stereotype.Repository;
-import tech.pasaperez.elixir.repositories.BaseRepository;
-
-@Repository
-public interface TareaRepository extends BaseRepository<Tarea, Long> {
-  boolean existsByTitulo(String titulo);
-}
-```
-
-### 5) Service
-
-```java
-package demo.todo;
-
-import org.springframework.stereotype.Service;
-import tech.pasaperez.elixir.services.BaseService;
-
-@Service
-public class TareaService extends BaseService<Tarea, Long> {
-  private final TareaRepository repo;
-  public TareaService(TareaRepository repo) { super(repo); this.repo = repo; }
-  @Override
-  public boolean checkIfExist(Tarea t) { return repo.existsByTitulo(t.getTitulo()); }
-}
-```
-
-### 6) Controller
-
-```java
-package demo.todo;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import tech.pasaperez.elixir.controllers.BaseController;
-
-@RestController
-@RequestMapping("/tareas")
-public class TareaController extends BaseController<Tarea, TareaService> {
-  public TareaController(TareaService service) { super(service); }
-}
-```
-
-### 7) Aplicación Spring Boot
-
-```java
-package demo;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class DemoApplication {
-  static void main(String[] args) {
-    SpringApplication.run(DemoApplication.class, args);
-  }
-}
-```
-
-Coloca tus clases bajo un paquete raíz común (por ejemplo `demo`) y deja `elixir` como dependencia. Spring Boot escaneará automáticamente los beans de tu app; los de `elixir` son utilitarios (interfaces/abstractos y el handler global).
-
-### 8) Probar con cURL
-
-Crear una tarea:
-
-```bash
-curl -X POST http://localhost:8080/tareas/ \
-  -H "Content-Type: application/json" \
-  -d '{"titulo":"Comprar pan","estado":"PENDIENTE"}'
-```
-
-Listar:
-
-```bash
-curl http://localhost:8080/tareas/
-```
-
-Obtener por id (1):
-
-```bash
-curl http://localhost:8080/tareas/1
-```
-
-Actualizar:
-
-```bash
-curl -X PUT http://localhost:8080/tareas/1 \
-  -H "Content-Type: application/json" \
-  -d '{"titulo":"Comprar pan","estado":"HECHA"}'
-```
-
-Eliminar:
-
-```bash
-curl -X DELETE http://localhost:8080/tareas/1 -i
-# Espera 204 No Content si se borró correctamente
-```
-
-### 9) Manejo de errores (qué vas a recibir)
-
-- Recurso inexistente:
-
-```json
-{
-  "status": "ERROR",
-  "error": [{"field":"Detalle","message":"No se encontró el recurso con id: 999"}]
-}
-```
-
-- Recurso duplicado (create con `titulo` repetido): HTTP 403 con `status: ERROR` y detalle en `error`.
-
-- Error de prueba `/status/error`: HTTP 409 con string plano (según `RestResponseEntityExceptionHandler`).
-
-### 10) Alternativa con Parametros
-
-Si prefieres una entidad de configuración (similar al concepto de "Parametros"), crea tu propia clase, por ejemplo:
-
-```java
-@Entity
-@Table(name="parametros")
-public class Parametros extends Base {
-  @Column(nullable=false, unique=true) private String clave;
-  @Column(nullable=false) private String valor;
-}
-```
-
-Y repite los pasos de Repository/Service/Controller como se mostró para `Tarea`.
-
----
 
 # LICENSE
 

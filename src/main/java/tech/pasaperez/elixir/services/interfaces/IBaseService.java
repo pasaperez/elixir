@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Generic base service interface that defines common CRUD operations for entities.
  * This interface provides a standard contract for service layer implementations
- * that handle basic entity operations with consistent API response structure.
+ * that handle basic entity operations with a consistent API response structure.
  *
  * @param <E> the entity type that extends Base
  * @param <ID> the type of the entity's identifier must be Serializable
@@ -47,7 +47,7 @@ public interface IBaseService<E extends Base, ID extends Serializable> {
      * This method persists the provided entity and returns an API response
      * containing the created entity with its assigned identifier.
      *
-     * @param entity the entity to be created, must not be null
+     * @param entity the entity to be created must not be null
      * @return APIResponse containing the created entity with generated ID
      * @throws AlreadyExistException if an entity with the same unique constraints already exists
      * @throws IllegalArgumentException if the entity parameter is null
@@ -58,7 +58,7 @@ public interface IBaseService<E extends Base, ID extends Serializable> {
      * Checks whether an entity with the same unique characteristics already exists in the system.
      * This method is typically used for validation before creating or updating entities.
      *
-     * @param entity the entity to check for existence, must not be null
+     * @param entity the entity to check for existence must not be null
      * @return true if an entity with matching unique constraints exists, false otherwise
      * @throws IllegalArgumentException if the entity parameter is null
      */
@@ -66,7 +66,7 @@ public interface IBaseService<E extends Base, ID extends Serializable> {
 
     /**
      * Retrieves all entities of the specified type from the system.
-     * This method returns a complete list of all persisted entities.
+     * This method returns a complete list of all persisting entities.
      *
      * @return APIResponse containing a list of all entities, empty list if no entities exist
      */
@@ -76,7 +76,7 @@ public interface IBaseService<E extends Base, ID extends Serializable> {
      * Finds and retrieves a specific entity by its unique identifier.
      * This method performs a lookup operation using the provided ID.
      *
-     * @param id the unique identifier of the entity to retrieve, must not be null
+     * @param id the unique identifier of the entity to retrieve must not be null
      * @return APIResponse containing the found entity
      * @throws NotFoundException if no entity exists with the provided identifier
      * @throws IllegalArgumentException if the id parameter is null
@@ -87,7 +87,7 @@ public interface IBaseService<E extends Base, ID extends Serializable> {
      * Updates an existing entity with new data.
      * This method finds the entity by ID and updates it with the provided entity data.
      *
-     * @param id the unique identifier of the entity to update, must not be null
+     * @param id the unique identifier of the entity to update must not be null
      * @param entity the entity containing updated data must not be null
      * @return APIResponse containing the updated entity
      * @throws NotFoundException if no entity exists with the provided identifier
@@ -99,7 +99,7 @@ public interface IBaseService<E extends Base, ID extends Serializable> {
      * Deletes an entity from the system by its unique identifier.
      * This method performs a soft or hard delete operation depending on implementation.
      *
-     * @param id the unique identifier of the entity to delete, must not be null
+     * @param id the unique identifier of the entity to delete must not be null
      * @return APIResponse containing the deleted entity information
      * @throws NotFoundException if no entity exists with the provided identifier
      * @throws IllegalArgumentException if the id parameter is null

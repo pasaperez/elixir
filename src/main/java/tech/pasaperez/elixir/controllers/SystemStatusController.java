@@ -56,7 +56,7 @@ import tech.pasaperez.elixir.exceptions.DefaultException;
  */
 @RestController
 @RequestMapping("/status")
-public class EstadoDelSistemaController {
+public class SystemStatusController {
 
     /**
      * Provides a basic health check endpoint that returns the current system status.
@@ -98,7 +98,7 @@ public class EstadoDelSistemaController {
      * </p>
      *
      * <p><strong>Warning:</strong> This endpoint should be used only in development
-     * and testing environments. Consider restricting access in production environments.</p>
+     * and testing environments. Consider restricting access to production environments.</p>
      *
      * <p><strong>Example usage:</strong></p>
      * <pre>
@@ -111,6 +111,6 @@ public class EstadoDelSistemaController {
      */
     @GetMapping ("/error")
     public void error() {
-        throw new DefaultException("Error Default Funcionando.");
+        throw new DefaultException("Default Error");
     }
 }

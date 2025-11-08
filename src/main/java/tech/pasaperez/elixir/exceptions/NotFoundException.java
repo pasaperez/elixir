@@ -21,6 +21,6 @@ package tech.pasaperez.elixir.exceptions;
 public class NotFoundException extends ResponseException {
 
     public NotFoundException(String id) {
-        super("No se encontró el recurso con id: "+id, "NotFoundException");
+        super(String.format("Resource with id [%s] not found", id), "NotFoundException");
     }
 }
