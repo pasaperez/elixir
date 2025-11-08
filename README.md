@@ -199,11 +199,6 @@ Use it from a Spring Boot app (by adding it as a dependency) or as part of the m
 * Use Springdoc: once integrated, Swagger UI will be available at `/swagger-ui.html` or `/swagger-ui/index.html`.
 * Use `MapperBase` for consistent success responses.
 
-## License and Metadata
-
-* Private and restricted license (see `LICENSE`).
-* Maven publication configured to GitHub Packages (see POMs).
-
 ## Quickstart (5 minutes) — How to Use Elixir in Your Spring Boot App
 
 Note: You can conceptually follow how it’s used in the `joyel` module, but **do not reuse its classes**.
@@ -600,11 +595,6 @@ Este módulo es una librería; no contiene clase `@SpringBootApplication`. Úsal
 - Ajusta CORS para orígenes específicos en producción.
 - Usa Springdoc: al integrarlo en tu app Boot, tendrás Swagger UI en `/swagger-ui.html` o `/swagger-ui/index.html`.
 - Aprovecha `MapperBase` para respuestas exitosas uniformes.
-
-## Licencia y metadata
-
-- Licencia privada y restringida (ver `LICENSE`).
-- Publicación Maven configurada a GitHub Packages (ver POMs).
 
 ## Quickstart (5 minutos) — Cómo usar Elixir en tu app Spring Boot
 
