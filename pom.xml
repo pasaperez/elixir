@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>tech.pasaperez</groupId>
+        <artifactId>backend</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>elixir</artifactId>
+    <name>Elixir Library</name>
+    <description>Elixir Library</description>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <url>https://github.com/pasaperez/elixir</url>
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License v3.0 or later</name>
+            <url>https://www.gnu.org/licenses/lgpl-3.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>pasaperez</id>
+            <name>Angel Santiago Perez</name>
+            <email>pasaperez@yahoo.com.ar</email>
+            <roles>
+                <role>owner</role>
+                <role>developer</role>
+            </roles>
+            <organization>Pasaperez</organization>
+            <organizationUrl>https://github.com/pasaperez</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:https://github.com/pasaperez/elixir.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/pasaperez/elixir.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/pasaperez/elixir</url>
+    </scm>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub pasaperez Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/pasaperez/elixir</url>
+        </repository>
+    </distributionManagement>
+    <properties>
+        <maven.compiler.release>16</maven.compiler.release>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                    <compilerArgs combine.self="override"/>
+                    <source>${maven.compiler.release}</source>
+                    <target>${maven.compiler.release}</target>
+                </configuration>
+                <inherited>false</inherited>
+            </plugin>
+        </plugins>
+    </build>
+</project>
