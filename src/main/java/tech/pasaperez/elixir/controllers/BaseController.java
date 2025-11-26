@@ -159,7 +159,7 @@ public abstract class BaseController <E extends Base, S extends BaseService<E, L
     @DeleteMapping("/{id}")
     @Override
     public ResponseEntity<APIResponse<E>> delete(@PathVariable Long id) throws NotFoundException, OperationNotSupportedException {
-        return servicio.delete(id) != null ? ResponseEntity.noContent().build() :
-                ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return servicio.delete(id)!=null ? new ResponseEntity<>(null, HttpStatus.NO_CONTENT) :
+                new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
     }
 }
