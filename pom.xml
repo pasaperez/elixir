@@ -9,7 +9,6 @@
     <artifactId>elixir</artifactId>
     <name>Elixir Library</name>
     <description>Elixir Library</description>
-    <version>1.0.0</version>
     <packaging>jar</packaging>
     <url>https://github.com/pasaperez/elixir</url>
     <licenses>
